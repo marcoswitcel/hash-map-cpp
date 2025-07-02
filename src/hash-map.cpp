@@ -4,10 +4,29 @@
 #include <stdint.h>
 #include <string.h>
 
+template <typename Type>
+struct Result {
+  bool success;
+  Type value;
+
+  Result()
+  {
+    this->success = false;
+  }
+};
+
 size_t hash(const char* value)
 {
   // @todo João, implementar uma função razoável
-  return strlen(value);
+  size_t hashed_value = 0;
+  size_t length = strlen(value);
+
+  for (size_t i = 0; i < length;  i++)
+  {
+    hashed_value += value[i];
+  }
+  
+  return hashed_value;
 }
 
 template <typename Value_Type>
@@ -28,7 +47,31 @@ struct Hash_Map {
   Hash_Map(size_t capacity)
   {
     this->capacity = capacity;
+    this->occupancy = 0;
     this->bucket = new Hash_Table_item<Value_Type>*[capacity];
+  }
+
+  Result<Value_Type> lookup(const char* key)
+  {
+    Result<Value_Type> result;
+
+    size_t index = hash(key) % this->capacity;
+    Hash_Table_item<Value_Type>* item = this->bucket[index];
+
+    if (!item) return result;
+
+    do
+    {
+      if (strcmp(item->key, key) == 0)
+      {
+        result.success = true;
+        result.value = item->value;
+        
+        return result;
+      }
+    } while ((item = item->next_item));
+
+    return result;
   }
 
   bool put(const char* key, Value_Type value)
@@ -69,7 +112,7 @@ struct Hash_Map {
         
         return true;
       }
-    } while (item = item->next_item);
+    } while ((item = item->next_item));
     
     return false;
   }
