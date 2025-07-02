@@ -23,26 +23,30 @@ struct Hash_Map {
   size_t capacity;
   size_t occupancy;
 
-  Hash_Table_item<Value_Type>* bucket;
+  Hash_Table_item<Value_Type>** bucket;
 
   Hash_Map(size_t capacity)
   {
     this->capacity = capacity;
-    this->bucket = new Hash_Table_item<Value_Type>[capacity];
+    this->bucket = new Hash_Table_item<Value_Type>*[capacity];
   }
 
   bool put(const char* key, Value_Type value)
   {
     size_t index = hash(key) % this->capacity;
 
-    Hash_Table_item<Value_Type>* item = &this->bucket[index];
+    Hash_Table_item<Value_Type>* item = this->bucket[index];
 
-    for (; item; item = item->next_item)
+    do
     {
-      if (item->key == NULL)
+      if (item == NULL)
       {
+        item = new Hash_Table_item<Value_Type>();
+
         item->key = key;
         item->value = value;
+
+        this->bucket[index] = item;
         this->occupancy++;
         
         return true;
@@ -65,7 +69,7 @@ struct Hash_Map {
         
         return true;
       }
-    }
+    } while (item = item->next_item);
     
     return false;
   }
