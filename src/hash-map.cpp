@@ -74,6 +74,13 @@ struct Hash_Map {
     return result;
   }
 
+  Result<Value_Type> remove(const char* key)
+  {
+    Result<Value_Type> result;
+    // @todo João, implementar a remoção
+    return result;
+  }
+
   bool put(const char* key, Value_Type value)
   {
     size_t index = hash(key) % this->capacity;
