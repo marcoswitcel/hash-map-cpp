@@ -47,12 +47,58 @@ void test_lookup()
   assert(map.occupancy == 2);
 }
 
+void test_dict()
+
+{
+  Hash_Map<size_t> map(1000);
+
+  std::string tokens[] = {"texto", "palavra", "nome", "idade", "texto"};
+
+  for (const auto &token : tokens)
+  {
+    auto key = token.c_str();
+    auto result = map.lookup(key);
+
+    if (result.success)
+    {
+      map.put(key, result.value + 1);
+    }
+    else
+    {
+      map.put(key, 1);
+    }
+  }
+
+  assert(map.lookup("texto").success);
+  assert(map.lookup("texto").value == 2);
+
+  assert(map.lookup("palavra").success);
+  assert(map.lookup("palavra").value == 1);
+
+  assert(map.lookup("palavra não existente").success == false);
+
+  /*
+  for (size_t i = 0; i < map.capacity; i++)
+  {
+    if (map.bucket[i])
+    {
+      auto item = map.bucket[i];
+      do
+      {
+        std::cout << "index: " << i << ", key:  " << item->key << ", value: " << item->value << std::endl;
+      } while ((item = item->next_item));
+    }
+  }
+  */
+}
+
 int main()
 {
   std::cout << "Rodando testes..." << std::endl;
 
   test_put();
   test_lookup();
+  test_dict();
 
   std::cout << "Finalizado" << std::endl;
 
