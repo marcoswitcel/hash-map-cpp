@@ -22,7 +22,8 @@ void test_lookup()
   Hash_Map<size_t> map(100);
 
   assert(map.put("teste", 100));
-  
+  assert(map.occupancy == 1);
+
   auto r = map.lookup("teste");
   assert(r.success);
   assert(r.value == 100);
@@ -31,6 +32,7 @@ void test_lookup()
   assert(!r2.success);
   
   assert(map.put("teste2", 200));
+  assert(map.occupancy == 2);
   
   auto r3 = map.lookup("teste2");
   assert(r3.success);
