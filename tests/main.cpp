@@ -48,7 +48,6 @@ void test_lookup()
 }
 
 void test_dict()
-
 {
   Hash_Map<size_t> map(1000);
 
