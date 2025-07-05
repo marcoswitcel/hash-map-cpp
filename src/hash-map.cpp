@@ -77,7 +77,35 @@ struct Hash_Map {
   Result<Value_Type> remove(const char* key)
   {
     Result<Value_Type> result;
-    // @todo João, implementar a remoção
+
+    size_t index = hash(key) % this->capacity;
+
+    Hash_Table_item<Value_Type>* previous_item = NULL;
+    Hash_Table_item<Value_Type>* item = this->bucket[index];
+
+    for (; item; previous_item = item, item = item->next_item)
+    {
+      if (strcmp(item->key, key) == 0)
+      {
+        if (previous_item == NULL)
+        {
+          this->bucket[index] = item->next_item;
+        }
+        else
+        {
+          previous_item->next_item = item->next_item;
+        }
+        
+        result.success = true;
+        result.value = item->value;
+        
+        this->occupancy--;
+        delete item;
+  
+        return result;
+      }
+    }
+
     return result;
   }
 

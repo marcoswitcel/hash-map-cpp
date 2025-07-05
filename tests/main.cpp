@@ -47,6 +47,59 @@ void test_lookup()
   assert(map.occupancy == 2);
 }
 
+void test_remove()
+{
+  Hash_Map<size_t> map(1024);
+
+  assert(map.put("teste", 100));
+  assert(map.occupancy == 1);
+
+  auto r1 = map.remove("teste");
+  assert(r1.success);
+  assert(r1.value = 100);
+
+  assert(map.occupancy == 0);
+
+  auto r2 = map.remove("teste");
+  assert(!r2.success);
+
+  auto r3 = map.remove("teste2");
+  assert(!r3.success);
+  assert(map.occupancy == 0);
+
+  assert(map.put("teste1", 100));
+  assert(map.put("teste2", 100));
+  assert(map.put("teste3", 100));
+
+  auto r4 = map.remove("teste2");
+  assert(r4.success);
+  assert(map.occupancy == 2);
+}
+
+void test_hashing_to_same_bucket()
+{
+  Hash_Map<size_t> map(1); // apenas um bucket
+
+  assert(map.put("teste1", 101));
+  assert(map.put("teste2", 102));
+  assert(map.put("teste3", 103));
+
+  assert(map.occupancy == 3);
+
+  auto r1 = map.lookup("teste1");
+  assert(r1.success);
+  assert(r1.value == 101);
+
+  auto r2 = map.lookup("teste2");
+  assert(r2.success);
+  assert(r2.value == 102);
+
+  auto r3 = map.remove("teste2");
+  assert(r3.success);
+  assert(r3.value == 102);
+  assert(map.occupancy == 2);
+}
+
 void test_dict()
 {
   Hash_Map<size_t> map(1000);
@@ -98,6 +151,8 @@ int main()
   test_put();
   test_lookup();
   test_dict();
+  test_remove();
+  test_hashing_to_same_bucket();
 
   std::cout << "Finalizado" << std::endl;
 
