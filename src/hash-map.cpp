@@ -15,6 +15,11 @@ struct Result {
   }
 };
 
+inline char* copy_key(const char* key)
+{
+  return strcpy(new char[strlen(key) + 1], key);
+}
+
 size_t hash(const char* value)
 {
   // @todo João, implementar uma função razoável
@@ -75,6 +80,7 @@ struct Hash_Map {
       while (item)
       {
         next = item->next_item;
+        delete[] item->key;
         delete item;
         item = next;
       }
@@ -132,6 +138,7 @@ struct Hash_Map {
         result.value = item->value;
         
         this->occupancy--;
+        delete[] item->key;
         delete item;
   
         return result;
@@ -153,8 +160,7 @@ struct Hash_Map {
       {
         item = new Hash_Table_Item<Value_Type>();
 
-        // @todo João, ajustar copyString
-        item->key = key; // @copyString
+        item->key = copy_key(key);
         item->value = value;
 
         this->bucket[index] = item;
@@ -164,7 +170,7 @@ struct Hash_Map {
       }
       else if (strcmp(item->key, key) == 0)
       {
-        item->key = key; // @copyString
+        item->key = copy_key(key);
         item->value = value;
         
         return true;
@@ -172,7 +178,7 @@ struct Hash_Map {
       else if (item->next_item == NULL)
       {
         Hash_Table_Item<Value_Type>* new_item = new Hash_Table_Item<Value_Type>;
-        new_item->key = key; // @copyString
+        new_item->key = copy_key(key);
         new_item->value = value;
 
         item->next_item = new_item;
