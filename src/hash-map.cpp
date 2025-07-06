@@ -63,6 +63,12 @@ struct Hash_Map {
     this->bucket = new Hash_Table_item<Value_Type>*[capacity];
   }
 
+  ~Hash_Map()
+  {
+    // @todo João, implementar o destructor
+    // delete[] this->bucket;
+  }
+
   Result<Value_Type> lookup(const char* key)
   {
     Result<Value_Type> result;
@@ -133,7 +139,8 @@ struct Hash_Map {
       {
         item = new Hash_Table_item<Value_Type>();
 
-        item->key = key;
+        // @todo João, ajustar copyString
+        item->key = key; // @copyString
         item->value = value;
 
         this->bucket[index] = item;
@@ -143,7 +150,7 @@ struct Hash_Map {
       }
       else if (strcmp(item->key, key) == 0)
       {
-        item->key = key;
+        item->key = key; // @copyString
         item->value = value;
         
         return true;
@@ -151,7 +158,7 @@ struct Hash_Map {
       else if (item->next_item == NULL)
       {
         Hash_Table_item<Value_Type>* new_item = new Hash_Table_item<Value_Type>;
-        new_item->key = key;
+        new_item->key = key; // @copyString
         new_item->value = value;
 
         item->next_item = new_item;
