@@ -30,10 +30,10 @@ size_t hash(const char* value)
 }
 
 template <typename Value_Type>
-struct Hash_Table_item {
+struct Hash_Table_Item {
   const char* key;
   Value_Type value;
-  Hash_Table_item* next_item;
+  Hash_Table_Item* next_item;
 };
 
 template <typename Value_Type>
@@ -54,13 +54,13 @@ struct Hash_Map {
    */
   size_t occupancy;
 
-  Hash_Table_item<Value_Type>** bucket;
+  Hash_Table_Item<Value_Type>** bucket;
 
   Hash_Map(size_t capacity)
   {
     this->capacity = capacity;
     this->occupancy = 0;
-    this->bucket = new Hash_Table_item<Value_Type>*[capacity];
+    this->bucket = new Hash_Table_Item<Value_Type>*[capacity];
   }
 
   ~Hash_Map()
@@ -74,7 +74,7 @@ struct Hash_Map {
     Result<Value_Type> result;
 
     size_t index = hash(key) % this->capacity;
-    Hash_Table_item<Value_Type>* item = this->bucket[index];
+    Hash_Table_Item<Value_Type>* item = this->bucket[index];
 
     if (!item) return result;
 
@@ -98,8 +98,8 @@ struct Hash_Map {
 
     size_t index = hash(key) % this->capacity;
 
-    Hash_Table_item<Value_Type>* previous_item = NULL;
-    Hash_Table_item<Value_Type>* item = this->bucket[index];
+    Hash_Table_Item<Value_Type>* previous_item = NULL;
+    Hash_Table_Item<Value_Type>* item = this->bucket[index];
 
     for (; item; previous_item = item, item = item->next_item)
     {
@@ -131,13 +131,13 @@ struct Hash_Map {
   {
     size_t index = hash(key) % this->capacity;
 
-    Hash_Table_item<Value_Type>* item = this->bucket[index];
+    Hash_Table_Item<Value_Type>* item = this->bucket[index];
 
     do
     {
       if (item == NULL)
       {
-        item = new Hash_Table_item<Value_Type>();
+        item = new Hash_Table_Item<Value_Type>();
 
         // @todo João, ajustar copyString
         item->key = key; // @copyString
@@ -157,7 +157,7 @@ struct Hash_Map {
       }
       else if (item->next_item == NULL)
       {
-        Hash_Table_item<Value_Type>* new_item = new Hash_Table_item<Value_Type>;
+        Hash_Table_Item<Value_Type>* new_item = new Hash_Table_Item<Value_Type>;
         new_item->key = key; // @copyString
         new_item->value = value;
 
