@@ -60,13 +60,27 @@ struct Hash_Map {
   {
     this->capacity = capacity;
     this->occupancy = 0;
-    this->bucket = new Hash_Table_Item<Value_Type>*[capacity];
+    // aloncado um 'array' de ponteiros inicializados para default: 0/NULL
+    this->bucket = new Hash_Table_Item<Value_Type>*[capacity]();
   }
 
   ~Hash_Map()
   {
-    // @todo João, implementar o destructor
-    // delete[] this->bucket;
+    // iterando e desalocando 'Itens' por 'bucket'
+    for (size_t i = 0; i < this->capacity; i++)
+    {
+      Hash_Table_Item<Value_Type>* item = this->bucket[i];
+      Hash_Table_Item<Value_Type>* next = NULL;
+      
+      while (item)
+      {
+        next = item->next_item;
+        delete item;
+        item = next;
+      }
+    }
+
+    delete[] this->bucket;
   }
 
   Result<Value_Type> lookup(const char* key)
