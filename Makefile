@@ -2,7 +2,7 @@
 ## usando g++ não precisa do parâmetro -lstdc++
 CC = g++
 CFLAGS = -Wall -Wextra -pedantic -std=c++2a
-LFLAGS = -lSDL2 -lSDL2_ttf
+LFLAGS = 
 DEF = -DDEV_CODE_ENABLED
 
 # Configurações gerais
