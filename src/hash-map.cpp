@@ -39,7 +39,19 @@ struct Hash_Table_item {
 template <typename Value_Type>
 struct Hash_Map {
 
+  /**
+   * @brief Define a capacidade máxima de elementos armazenados separadamente, quanto maior
+   * o número, melhor a performance, porém, mais memória será usada desde a alocação inicial.
+   * Esse campo em conjunto com o campo `occupancy` podem ser usados para 'especular' a 'eficiência' atual
+   * do Hash Map, considerando que quanto mais cheio o Map esteja, mais entradas duplicadas terá e por
+   * consequência, mais tempo os 'lookups', 'put' e 'removes' tomarão.
+   * 
+   */
   size_t capacity;
+  /**
+   * @brief mantém o controle da quantidade de elementos armazenados
+   * 
+   */
   size_t occupancy;
 
   Hash_Table_item<Value_Type>** bucket;
