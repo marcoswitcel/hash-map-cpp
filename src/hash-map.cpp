@@ -4,9 +4,23 @@
 #include <stdint.h>
 #include <string.h>
 
+/**
+ * @brief representa o sucesso ou falha da operação em questão, por exemplo: sucesso na busca
+ * signifca que existia um valor associado a chave e ele foi recuperado, enquanto que sucesso
+ * na remoção significa que o valor associado a chave existia e foi removido.
+ * 
+ * @tparam Type 
+ */
 template <typename Type>
 struct Result {
+  /**
+   * @brief sinaliza o sucesso ou falha da oporação, sinaliza também se o campo `value`
+   * contém ou não o valor desejado.
+   */
   bool success;
+  /**
+   * @brief valor buscado em caso de sucesso
+   */
   Type value;
 
   Result()
@@ -34,6 +48,11 @@ size_t hash(const char* value)
   return hashed_value;
 }
 
+/**
+ * @brief representa uma entrada no Hash Map
+ * 
+ * @tparam Value_Type 
+ */
 template <typename Value_Type>
 struct Hash_Table_Item {
   const char* key;
@@ -89,6 +108,14 @@ struct Hash_Map {
     delete[] this->bucket;
   }
 
+  /**
+   * @brief faz a busca da chave especificada no Hash Map pelo valor associado a chave
+   * 
+   * @param key chave que deve ser procurada
+   * @return Result<Value_Type> o retorno pode ser tanto de um sucesso na operação realizada (busca), com o valor
+   * associado retornado junto, ou um retorno de falha, que no caso da busca sinaliza que chave não está registrada no momento
+   * (ou nunca foi registrada ou foi removida).
+   */
   Result<Value_Type> lookup(const char* key)
   {
     Result<Value_Type> result;
@@ -170,14 +197,13 @@ struct Hash_Map {
       }
       else if (strcmp(item->key, key) == 0)
       {
-        item->key = copy_key(key);
         item->value = value;
         
         return true;
       }
       else if (item->next_item == NULL)
       {
-        Hash_Table_Item<Value_Type>* new_item = new Hash_Table_Item<Value_Type>;
+        Hash_Table_Item<Value_Type>* new_item = new Hash_Table_Item<Value_Type>();
         new_item->key = copy_key(key);
         new_item->value = value;
 
