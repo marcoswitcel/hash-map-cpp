@@ -60,6 +60,11 @@ struct Hash_Table_Item {
   Hash_Table_Item* next_item;
 };
 
+/**
+ * @brief Hash Map
+ * 
+ * @tparam Value_Type tipo de dado associado à chave
+ */
 template <typename Value_Type>
 struct Hash_Map {
 
