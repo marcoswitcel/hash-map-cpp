@@ -181,21 +181,22 @@ struct Hash_Map {
 
     Hash_Table_Item<Value_Type>* item = this->bucket[index];
 
+    if (item == NULL)
+    {
+      Hash_Table_Item<Value_Type>* new_item = new Hash_Table_Item<Value_Type>();
+
+      new_item->key = copy_key(key);
+      new_item->value = value;
+
+      this->bucket[index] = new_item;
+      this->occupancy++;
+      
+      return true;
+    }
+
     do
     {
-      if (item == NULL)
-      {
-        item = new Hash_Table_Item<Value_Type>();
-
-        item->key = copy_key(key);
-        item->value = value;
-
-        this->bucket[index] = item;
-        this->occupancy++;
-        
-        return true;
-      }
-      else if (strcmp(item->key, key) == 0)
+      if (strcmp(item->key, key) == 0)
       {
         item->value = value;
         
