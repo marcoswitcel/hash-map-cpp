@@ -6,7 +6,7 @@
 
 /**
  * @brief representa o sucesso ou falha da operação em questão, por exemplo: sucesso na busca
- * signifca que existia um valor associado a chave e ele foi recuperado, enquanto que sucesso
+ * significa que existia um valor associado a chave e ele foi recuperado, enquanto que sucesso
  * na remoção significa que o valor associado a chave existia e foi removido.
  * 
  * @tparam Type 
@@ -123,9 +123,7 @@ struct Hash_Map {
     size_t index = hash(key) % this->capacity;
     Hash_Table_Item<Value_Type>* item = this->bucket[index];
 
-    if (!item) return result;
-
-    do
+    while (item)
     {
       if (strcmp(item->key, key) == 0)
       {
@@ -134,7 +132,9 @@ struct Hash_Map {
         
         return result;
       }
-    } while ((item = item->next_item));
+
+      item = item->next_item;
+    } 
 
     return result;
   }
