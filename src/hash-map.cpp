@@ -23,9 +23,28 @@ struct Result {
    */
   Type value;
 
-  Result()
+  /**
+   * @brief sinaliza o sucesso da operação
+   * 
+   * @param value 
+   * @return Result<Type> 
+   */
+  static inline Result<Type> ok(Type value)
   {
-    this->success = false;
+    return { true, value };
+  }
+
+  /**
+   * @brief sinaliza a falha da operação; falha não quer dizer erro, apenas que a operação não
+   * fez sentido para a chave em questão
+   * 
+   * @return Result<Type> 
+   */
+  static inline Result<Type> fail()
+  {
+    Result<Type> result;
+    result.success = false;
+    return result;
   }
 };
 
@@ -34,6 +53,13 @@ inline char* copy_key(const char* key)
   return strcpy(new char[strlen(key) + 1], key);
 }
 
+/**
+ * @brief 
+ * @note Testei com o hasher std::hash<std::string> já
+ * 
+ * @param value 
+ * @return size_t 
+ */
 size_t hash(const char* value)
 {
   // @todo João, implementar uma função razoável
@@ -123,8 +149,6 @@ struct Hash_Map {
    */
   Result<Value_Type> lookup(const char* key)
   {
-    Result<Value_Type> result;
-
     size_t index = hash(key) % this->capacity;
     Hash_Table_Item<Value_Type>* item = this->bucket[index];
 
@@ -132,22 +156,17 @@ struct Hash_Map {
     {
       if (strcmp(item->key, key) == 0)
       {
-        result.success = true;
-        result.value = item->value;
-        
-        return result;
+        return Result<Value_Type>::ok(item->value);
       }
 
       item = item->next_item;
     } 
 
-    return result;
+    return Result<Value_Type>::fail();
   }
 
   Result<Value_Type> remove(const char* key)
   {
-    Result<Value_Type> result;
-
     size_t index = hash(key) % this->capacity;
 
     Hash_Table_Item<Value_Type>* previous_item = NULL;
@@ -166,8 +185,7 @@ struct Hash_Map {
           previous_item->next_item = item->next_item;
         }
         
-        result.success = true;
-        result.value = item->value;
+        auto result = Result<Value_Type>::ok(item->value);
         
         this->occupancy--;
         delete[] item->key;
@@ -177,7 +195,7 @@ struct Hash_Map {
       }
     }
 
-    return result;
+    return Result<Value_Type>::fail();
   }
 
   bool put(const char* key, Value_Type value)
