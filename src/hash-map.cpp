@@ -84,6 +84,7 @@ struct Hash_Table_Item {
  * @brief Hash Map
  * 
  * @tparam Value_Type tipo de dado associado à chave
+ * @tparam hash função hash usada na instância
  */
 template <typename Value_Type, size_t (*hash)(const char*) = default_hasher>
 struct Hash_Map {
