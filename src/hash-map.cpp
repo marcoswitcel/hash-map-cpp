@@ -140,7 +140,7 @@ struct Hash_Map {
    * @param key chave que deve ser procurada
    * @return Result<Value_Type> o retorno pode ser tanto de um sucesso na operação realizada (busca), com o valor
    * associado retornado junto, ou um retorno de falha, que no caso da busca sinaliza que chave não está registrada no momento
-   * (ou nunca foi registrada ou foi removida).
+   * (nunca foi registrada ou foi removida).
    */
   Result<Value_Type> lookup(const char* key)
   {
@@ -160,6 +160,14 @@ struct Hash_Map {
     return Result<Value_Type>::fail();
   }
 
+  /**
+   * @brief busca e remove a chave do Hash Map
+   * 
+   * @param key chave que deve ser procurada e removida
+   * @return Result<Value_Type> o retorno pode ser tanto de um sucesso na operação realizada (busca e remoção), com o valor
+   * associado retornado junto, ou um retorno de falha, que no caso da busca sinaliza que chave não está registrada no momento
+   * (nunca foi registrada ou foi removida).
+   */
   Result<Value_Type> remove(const char* key)
   {
     size_t index = hash(key) % this->capacity;
@@ -193,6 +201,14 @@ struct Hash_Map {
     return Result<Value_Type>::fail();
   }
 
+  /**
+   * @brief insere ou atualiza o valor associado a chave
+   * 
+   * @param key chave que deve ser inserida ou ter seu valor atualizado
+   * @param value valor a ser persistido
+   * @return true 
+   * @return false 
+   */
   bool put(const char* key, Value_Type value)
   {
     size_t index = hash(key) % this->capacity;
