@@ -1,8 +1,9 @@
 #pragma once
 
-#include <assert.h>
 #include <stdint.h>
 #include <string.h>
+#include <functional>
+#include <string>
 
 /**
  * @brief representa o sucesso ou falha da operação em questão, por exemplo: sucesso na busca
@@ -60,18 +61,11 @@ inline char* copy_key(const char* key)
  * @param value 
  * @return size_t 
  */
-size_t hash(const char* value)
+inline size_t default_hasher(const char* value)
 {
-  // @todo João, implementar uma função razoável
-  size_t hashed_value = 0;
-  size_t length = strlen(value);
+  static std::hash<std::string> hasher;
 
-  for (size_t i = 0; i < length;  i++)
-  {
-    hashed_value += value[i];
-  }
-  
-  return hashed_value;
+  return hasher(std::string(value));
 }
 
 /**
@@ -91,7 +85,7 @@ struct Hash_Table_Item {
  * 
  * @tparam Value_Type tipo de dado associado à chave
  */
-template <typename Value_Type>
+template <typename Value_Type, size_t (*hash)(const char*) = default_hasher>
 struct Hash_Map {
 
   /**
