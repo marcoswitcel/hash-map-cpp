@@ -145,6 +145,47 @@ void test_dict()
   */
 }
 
+void test_clear()
+{
+  Hash_Map<size_t> map(100);
+
+  assert(map.put("teste", 100));
+  assert(map.occupancy == 1);
+
+  auto r = map.lookup("teste");
+  assert(r.success);
+  assert(r.value == 100);
+  
+  auto r2 = map.lookup("teste2");
+  assert(!r2.success);
+  
+  assert(map.put("teste2", 200));
+  assert(map.occupancy == 2);
+  
+  auto r3 = map.lookup("teste2");
+  assert(r3.success);
+  assert(r3.value == 200);
+
+  map.clear();
+
+  assert(map.occupancy == 0);
+
+  assert(map.put("teste", 240));
+  
+  auto r4 = map.lookup("teste");
+  assert(r4.success);
+  assert(r4.value == 240);
+
+  assert(map.occupancy == 1);
+
+  map.clear();
+
+  auto r5 = map.lookup("teste");
+  assert(!r5.success);
+
+  assert(map.occupancy == 0);
+}
+
 int main()
 {
   std::cout << "Rodando testes..." << std::endl;
@@ -153,6 +194,7 @@ int main()
   test_lookup();
   test_dict();
   test_remove();
+  test_clear();
   test_hashing_to_same_bucket();
 
   std::cout << "Finalizado" << std::endl;

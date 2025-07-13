@@ -251,4 +251,29 @@ struct Hash_Map {
     
     return false;
   }
+
+  /**
+   * @brief remove todas as chaves do Hash Map
+   * 
+   */
+  void clear()
+  {
+    // iterando e desalocando 'Itens' por 'bucket'
+    for (size_t i = 0; i < this->capacity; i++)
+    {
+      Hash_Table_Item<Value_Type>* item = this->bucket[i];
+      Hash_Table_Item<Value_Type>* next = NULL;
+      this->bucket[i] = NULL;
+      
+      while (item)
+      {
+        next = item->next_item;
+        delete[] item->key;
+        delete item;
+        item = next;
+      }
+    }
+
+    this->occupancy = 0;
+  }
 };
