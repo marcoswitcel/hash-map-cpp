@@ -105,7 +105,13 @@ void test_dict()
 {
   Hash_Map<size_t> map(1000);
 
-  std::string tokens[] = {"texto", "palavra", "nome", "idade", "texto"};
+  std::string tokens[] = {
+    "texto", "palavra", "nome", "idade", "texto",
+    "cidade", "palavra", "nome", "idade", "Marcos",
+    "texto", "palavra", "nome", "idade", "carro",
+    "carro", "carro", "carros", "viajar", "texto",
+    "texto", "palavra", "nome", "casa", "Avião",
+  };
 
   for (const auto &token : tokens)
   {
@@ -123,10 +129,16 @@ void test_dict()
   }
 
   assert(map.lookup("texto").success);
-  assert(map.lookup("texto").value == 2);
+  assert(map.lookup("texto").value == 5);
 
   assert(map.lookup("palavra").success);
-  assert(map.lookup("palavra").value == 1);
+  assert(map.lookup("palavra").value == 4);
+
+  assert(map.lookup("Avião").success);
+  assert(map.lookup("Avião").value == 1);
+
+  assert(map.lookup("nome").success);
+  assert(map.lookup("nome").value == 4);
 
   assert(map.lookup("palavra não existente").success == false);
 
