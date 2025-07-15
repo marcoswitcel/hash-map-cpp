@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include "../src/hash-map.cpp"
+#include "../src/hash-set.cpp"
 
 void test_put()
 {
@@ -99,6 +100,15 @@ void test_hashing_to_same_bucket()
   assert(r3.success);
   assert(r3.value == 102);
   assert(map.occupancy == 2);
+}
+
+void test_hash_set_add()
+{
+  Hash_Set<size_t> map(1024);
+
+  // @todo João, implementar e testar
+  // assert(map.add(1));
+  // assert(!map.add(1));
 }
 
 void test_dict()
@@ -208,6 +218,8 @@ int main()
   test_remove();
   test_clear();
   test_hashing_to_same_bucket();
+
+  test_hash_set_add();
 
   std::cout << "Finalizado" << std::endl;
 
