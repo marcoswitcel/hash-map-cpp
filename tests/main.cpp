@@ -107,8 +107,8 @@ void test_hash_set_add()
   Hash_Set<size_t> map(1024);
 
   // @todo João, implementar e testar
-  // assert(map.add(1));
-  // assert(!map.add(1));
+  assert(map.add(1));
+  assert(!map.add(1));
 }
 
 void test_dict()

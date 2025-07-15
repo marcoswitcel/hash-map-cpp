@@ -1,6 +1,15 @@
 #pragma once
 
 #include <stdint.h>
+#include <cstring>
+
+template <typename Value_Type>
+inline size_t hash_value(Value_Type value)
+{
+  static std::hash<Value_Type> hasher;
+
+  return hasher(value);
+}
 
 template <typename Value_Type>
 struct Hash_Set_Item {
@@ -30,7 +39,39 @@ struct Hash_Set {
 
   bool add(Value_Type value)
   {
-    // @todo implementar
+    size_t index = hash_value(value) % this->capacity;
+    Hash_Set_Item<Value_Type>* item = this->bucket[index];
+
+    if (item == NULL)
+    {
+      Hash_Set_Item<Value_Type>* new_item = new Hash_Set_Item<Value_Type>();
+
+      new_item->value = value;
+
+      this->bucket[index] = new_item;
+      this->occupancy++;
+      
+      return true;
+    }
+
+    do
+    {
+      if (std::memcmp(&item->value, &value, sizeof(Value_Type)) == 0)
+      {
+        return false;
+      }
+      else if (item->next_item == NULL)
+      {
+        Hash_Set_Item<Value_Type>* new_item = new Hash_Set_Item<Value_Type>();
+        new_item->value = value;
+
+        item->next_item = new_item;
+        this->occupancy++;
+        
+        return true;
+      }
+    } while ((item = item->next_item));
+    
     return false;
   }
 
