@@ -15,6 +15,12 @@ template <typename Value_Type>
 struct Hash_Set_Item {
   Value_Type value;
   Hash_Set_Item* next_item;
+
+  Hash_Set_Item(Value_Type value)
+  {
+    this->value = value;
+    this->next_item = NULL;
+  }
 };
 
 
@@ -44,11 +50,7 @@ struct Hash_Set {
 
     if (item == NULL)
     {
-      Hash_Set_Item<Value_Type>* new_item = new Hash_Set_Item<Value_Type>();
-
-      new_item->value = value;
-
-      this->bucket[index] = new_item;
+      this->bucket[index] = new Hash_Set_Item<Value_Type>(value);
       this->occupancy++;
       
       return true;
@@ -62,10 +64,7 @@ struct Hash_Set {
       }
       else if (item->next_item == NULL)
       {
-        Hash_Set_Item<Value_Type>* new_item = new Hash_Set_Item<Value_Type>();
-        new_item->value = value;
-
-        item->next_item = new_item;
+        item->next_item = new Hash_Set_Item<Value_Type>(value);
         this->occupancy++;
         
         return true;
