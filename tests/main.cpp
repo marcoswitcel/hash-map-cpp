@@ -134,6 +134,23 @@ void test_hash_set_has()
   assert(map.has(3));
 }
 
+void test_hash_set_remove()
+{
+  Hash_Set<size_t> map(1024);
+
+  assert(!map.remove(3));
+  assert(map.add(3));
+  assert(map.has(3));
+  assert(map.remove(3));
+  assert(!map.has(3));
+
+  assert(!map.remove(1027));
+  assert(map.add(1027));
+  assert(map.has(1027));
+  assert(map.remove(1027));
+  assert(!map.has(1027));
+}
+
 void test_dict()
 {
   Hash_Map<size_t> map(1000);
@@ -244,6 +261,7 @@ int main()
 
   test_hash_set_add();
   test_hash_set_has();
+  test_hash_set_remove();
 
   std::cout << "Finalizado" << std::endl;
 

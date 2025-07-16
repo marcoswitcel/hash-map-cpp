@@ -94,7 +94,34 @@ struct Hash_Set {
 
   bool remove(Value_Type value)
   {
-    // @todo implementar
+    size_t index = hash_value(value) % this->capacity;
+
+    Hash_Set_Item<Value_Type>* item = this->bucket[index];
+    Hash_Set_Item<Value_Type>* previous_item = NULL;
+
+    while (item)
+    {
+      if (std::memcmp(&item->value, &value, sizeof(Value_Type)) == 0)
+      {
+        if (previous_item == NULL)
+        {
+          this->bucket[index] = item->next_item;
+        }
+        else
+        {
+          previous_item->next_item = item->next_item;
+        }
+
+        this->occupancy--;
+        delete item;
+
+        return true;
+      }
+
+      previous_item = item;
+      item = item->next_item;
+    }
+
     return false;
   }
 
