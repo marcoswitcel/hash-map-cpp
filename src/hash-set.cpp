@@ -4,11 +4,17 @@
 #include <cstring>
 
 template <typename Value_Type>
-inline size_t hash_value(Value_Type value)
+inline size_t default_hash_value(Value_Type value)
 {
   static std::hash<Value_Type> hasher;
 
   return hasher(value);
+}
+
+template <typename Value_Type>
+inline bool value_compare_by_byte(Value_Type* v1, Value_Type* v2)
+{
+  return std::memcmp(v1, v2, sizeof(Value_Type)) == 0;
 }
 
 template <typename Value_Type>
@@ -23,8 +29,9 @@ struct Hash_Set_Item {
   }
 };
 
-
-template <typename Value_Type>
+template <typename Value_Type,
+  bool (*equality)(Value_Type*, Value_Type*) = value_compare_by_byte,
+  size_t (*hash_value)(Value_Type) = default_hash_value>
 struct Hash_Set {
   size_t capacity;
   size_t occupancy;
@@ -58,7 +65,7 @@ struct Hash_Set {
 
     do
     {
-      if (std::memcmp(&item->value, &value, sizeof(Value_Type)) == 0)
+      if (equality(&item->value, &value))
       {
         return false;
       }
@@ -81,7 +88,7 @@ struct Hash_Set {
 
     while (item)
     {
-      if (std::memcmp(&item->value, &value, sizeof(Value_Type)) == 0)
+      if (equality(&item->value, &value))
       {
         return true;
       }
