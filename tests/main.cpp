@@ -106,9 +106,32 @@ void test_hash_set_add()
 {
   Hash_Set<size_t> map(1024);
 
-  // @todo João, implementar e testar
   assert(map.add(1));
   assert(!map.add(1));
+
+  assert(map.add(3));
+  assert(!map.add(1));
+  assert(!map.add(3));
+  assert(map.add(7));
+  assert(!map.add(7));
+}
+
+void test_hash_set_has()
+{
+  Hash_Set<size_t> map(1024);
+
+  assert(!map.has(1));
+
+  assert(map.add(1));
+
+  assert(map.has(1));
+
+  assert(map.add(3));
+  
+  assert(map.has(1));
+  
+  assert(!map.add(3));
+  assert(map.has(3));
 }
 
 void test_dict()
@@ -220,6 +243,7 @@ int main()
   test_hashing_to_same_bucket();
 
   test_hash_set_add();
+  test_hash_set_has();
 
   std::cout << "Finalizado" << std::endl;
 

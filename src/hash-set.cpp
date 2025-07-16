@@ -76,7 +76,19 @@ struct Hash_Set {
 
   bool has(Value_Type value)
   {
-    // @todo implementar
+    size_t index = hash_value(value) % this->capacity;
+    Hash_Set_Item<Value_Type>* item = this->bucket[index];
+
+    while (item)
+    {
+      if (std::memcmp(&item->value, &value, sizeof(Value_Type)) == 0)
+      {
+        return true;
+      }
+
+      item = item->next_item;
+    }
+    
     return false;
   }
 
