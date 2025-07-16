@@ -134,6 +134,21 @@ struct Hash_Set {
 
   void clear()
   {
-    // @todo implementar
+    // iterando e desalocando 'Itens' por 'bucket'
+    for (size_t i = 0; i < this->capacity; i++)
+    {
+      Hash_Set_Item<Value_Type>* item = this->bucket[i];
+      Hash_Set_Item<Value_Type>* next = NULL;
+      this->bucket[i] = NULL;
+      
+      while (item)
+      {
+        next = item->next_item;
+        delete item;
+        item = next;
+      }
+    }
+
+    this->occupancy = 0;
   }
 };

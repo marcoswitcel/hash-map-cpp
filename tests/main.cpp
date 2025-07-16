@@ -141,6 +141,20 @@ void test_hash_set_has()
   assert(map.has(3));
 }
 
+void test_hash_set_clear()
+{
+  Hash_Set<size_t> map(1024);
+
+  assert(map.occupancy == 0);
+  map.clear();
+  assert(map.occupancy == 0);
+
+  assert(map.add(3));
+  assert(map.occupancy == 1);
+  map.clear();
+  assert(map.occupancy == 0);
+}
+
 void test_hash_set_remove()
 {
   Hash_Set<size_t> map(1024);
@@ -273,6 +287,7 @@ int main()
   test_hash_set_add();
   test_hash_set_has();
   test_hash_set_remove();
+  test_hash_set_clear();
 
   std::cout << "Finalizado" << std::endl;
 
