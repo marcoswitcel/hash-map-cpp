@@ -109,11 +109,18 @@ void test_hash_set_add()
   assert(map.add(1));
   assert(!map.add(1));
 
+  assert(map.occupancy == 1);
+
   assert(map.add(3));
   assert(!map.add(1));
   assert(!map.add(3));
+
+  assert(map.occupancy == 2);
+
   assert(map.add(7));
   assert(!map.add(7));
+
+  assert(map.occupancy == 3);
 }
 
 void test_hash_set_has()
@@ -138,10 +145,14 @@ void test_hash_set_remove()
 {
   Hash_Set<size_t> map(1024);
 
+  assert(map.occupancy == 0);
   assert(!map.remove(3));
+  assert(map.occupancy == 0);
   assert(map.add(3));
+  assert(map.occupancy == 1);
   assert(map.has(3));
   assert(map.remove(3));
+  assert(map.occupancy == 0);
   assert(!map.has(3));
 
   assert(!map.remove(1027));
