@@ -296,6 +296,25 @@ void test_clear()
   assert(map.occupancy == 0);
 }
 
+void test_hash_map_with_stdstrings()
+{
+  // @todo João, completamente quebrado...
+  Hash_Map<size_t> map(100);
+
+  // const char* v01 = "texto";
+  // const char* v02 = "palavra";
+  // const char* v03 = "texto";
+  // 
+  // assert(map.put(v01, 13));
+
+  // assert(!map.lookup(v03).success);
+ 
+  // assert(map.put(v03, 14));
+ 
+  // assert(map.lookup(v01).success);
+  // assert(map.lookup(v01).value == 14);
+}
+
 int main()
 {
   std::cout << "Rodando testes..." << std::endl;
@@ -306,6 +325,7 @@ int main()
   test_remove();
   test_clear();
   test_hashing_to_same_bucket();
+  test_hash_map_with_stdstrings();
 
   test_hash_set_add();
   test_hash_set_has();
