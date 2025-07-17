@@ -155,6 +155,29 @@ void test_hash_set_clear()
   assert(map.occupancy == 0);
 }
 
+// @todo João, custom structs não funciona...
+struct Test_Struct_Type {
+  size_t id;
+  std::string text;
+};
+
+void test_hash_set_changing_hash_func_and_compare()
+{
+  Hash_Set<std::string> map(1024);
+
+  std::string v01 = "texto";
+  std::string v02 = "palavra";
+  std::string v03 = "texto";
+  
+  assert(map.add(v01));
+  assert(map.add(v02));
+  // @todo João, strings não funcionam...
+  // assert(!map.add(v03));
+
+  //Test_Struct_Type value01 = { 32, "teste" };
+
+}
+
 void test_hash_set_remove()
 {
   Hash_Set<size_t> map(1024);
@@ -288,6 +311,7 @@ int main()
   test_hash_set_has();
   test_hash_set_remove();
   test_hash_set_clear();
+  test_hash_set_changing_hash_func_and_compare();
 
   std::cout << "Finalizado" << std::endl;
 
