@@ -17,6 +17,12 @@ inline bool value_compare_by_byte(Value_Type* v1, Value_Type* v2)
   return std::memcmp(v1, v2, sizeof(Value_Type)) == 0;
 }
 
+// especialização para std::string
+inline bool value_compare_by_byte(std::string* v1, std::string* v2)
+{
+  return v1->compare(v2->c_str()) == 0;
+}
+
 template <typename Value_Type>
 struct Hash_Set_Item {
   Value_Type value;

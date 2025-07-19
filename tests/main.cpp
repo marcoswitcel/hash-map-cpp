@@ -172,8 +172,8 @@ void test_hash_set_changing_hash_func_and_compare()
   assert(map.add(v01));
   assert(map.add(v02));
   // @todo João, strings não funcionam...
-  // assert(!map.add(v01));
-  // assert(!map.add(v03));
+  assert(!map.add(v01));
+  assert(!map.add(v03));
 
   //Test_Struct_Type value01 = { 32, "teste" };
 
