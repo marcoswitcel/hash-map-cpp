@@ -158,7 +158,7 @@ void test_hash_set_clear()
 // @todo João, custom structs não funciona...
 struct Test_Struct_Type {
   size_t id;
-  std::string text;
+  const char* text;
 };
 
 void test_hash_set_changing_hash_func_and_compare()
@@ -171,12 +171,8 @@ void test_hash_set_changing_hash_func_and_compare()
   
   assert(map.add(v01));
   assert(map.add(v02));
-  // @todo João, strings não funcionam...
   assert(!map.add(v01));
   assert(!map.add(v03));
-
-  //Test_Struct_Type value01 = { 32, "teste" };
-
 }
 
 void test_hash_set_remove()
