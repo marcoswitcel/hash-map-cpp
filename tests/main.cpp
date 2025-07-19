@@ -172,6 +172,7 @@ void test_hash_set_changing_hash_func_and_compare()
   assert(map.add(v01));
   assert(map.add(v02));
   // @todo João, strings não funcionam...
+  // assert(!map.add(v01));
   // assert(!map.add(v03));
 
   //Test_Struct_Type value01 = { 32, "teste" };
@@ -298,21 +299,20 @@ void test_clear()
 
 void test_hash_map_with_stdstrings()
 {
-  // @todo João, completamente quebrado...
   Hash_Map<size_t> map(100);
 
-  // const char* v01 = "texto";
-  // const char* v02 = "palavra";
-  // const char* v03 = "texto";
-  // 
-  // assert(map.put(v01, 13));
+  const char* v01 = "texto";
+  const char* v02 = "palavra";
+  const char* v03 = "texto";
+  
+  assert(map.put(v01, 13));
 
-  // assert(!map.lookup(v03).success);
+  assert(map.lookup(v03).success);
  
-  // assert(map.put(v03, 14));
+  assert(map.put(v03, 14));
  
-  // assert(map.lookup(v01).success);
-  // assert(map.lookup(v01).value == 14);
+  assert(map.lookup(v01).success);
+  assert(map.lookup(v01).value == 14);
 }
 
 int main()
