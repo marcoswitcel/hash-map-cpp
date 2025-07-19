@@ -5,6 +5,7 @@
 
 #include "../src/hash-map.cpp"
 #include "../src/hash-set.cpp"
+#include "../src/hash.cpp"
 
 void test_hash_map_put()
 {
@@ -99,6 +100,24 @@ void test_hash_map_hashing_to_same_bucket()
   auto r3 = map.remove("teste2");
   assert(r3.success);
   assert(r3.value == 102);
+  assert(map.occupancy == 2);
+}
+
+size_t other_hash(const char* key)
+{
+  return hash(key, strlen(key));
+}
+
+void test_hash_map_changing_hash_func()
+{
+  Hash_Map<size_t, other_hash> map(1024);
+
+  assert(map.put("teste", 100));
+  assert(map.put("teste", 100));
+    
+  assert(map.put("teste2", 100));
+  assert(map.put("teste2", 100));
+
   assert(map.occupancy == 2);
 }
 
@@ -347,6 +366,7 @@ int main()
   test_hash_map_clear();
   test_hash_map_hashing_to_same_bucket();
   test_hash_map_with_stdstrings();
+  test_hash_map_changing_hash_func();
 
   test_hash_set_add();
   test_hash_set_has();
