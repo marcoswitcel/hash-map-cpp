@@ -155,13 +155,7 @@ void test_hash_set_clear()
   assert(map.occupancy == 0);
 }
 
-// @todo João, custom structs não funciona...
-struct Test_Struct_Type {
-  size_t id;
-  const char* text;
-};
-
-void test_hash_set_changing_hash_func_and_compare()
+void test_hash_set_std_string()
 {
   Hash_Set<std::string> map(1024);
 
@@ -173,6 +167,38 @@ void test_hash_set_changing_hash_func_and_compare()
   assert(map.add(v02));
   assert(!map.add(v01));
   assert(!map.add(v03));
+}
+
+struct Test_Struct_Type {
+  size_t id;
+  const char* text;
+};
+
+inline size_t hash_for_test_struct_type(Test_Struct_Type value)
+{
+  static std::hash<size_t> hasher;
+
+  return hasher(value.id);
+}
+
+inline bool compare_for_test_struct_type(Test_Struct_Type* v1, Test_Struct_Type* v2)
+{
+  return v1->id == v2->id;
+}
+
+void test_hash_set_changing_hash_func_and_compare()
+{
+  Test_Struct_Type t01 = { 1, "texto" };
+  Test_Struct_Type t02 = { 2, "nome" };
+  Test_Struct_Type t03 = { 3, "verbo" };
+  Test_Struct_Type t04 = { 1, "verbo" };
+  
+  Hash_Set<Test_Struct_Type, compare_for_test_struct_type, hash_for_test_struct_type> set(1024);
+
+  assert(set.add(t01));
+  assert(set.add(t02));
+  assert(set.add(t03));
+  assert(!set.add(t04));
 }
 
 void test_hash_set_remove()
@@ -326,6 +352,7 @@ int main()
   test_hash_set_has();
   test_hash_set_remove();
   test_hash_set_clear();
+  test_hash_set_std_string();
   test_hash_set_changing_hash_func_and_compare();
 
   std::cout << "Finalizado" << std::endl;

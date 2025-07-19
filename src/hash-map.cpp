@@ -65,7 +65,6 @@ inline size_t default_hasher(const char* value)
 {
   static std::hash<std::string> hasher;
 
-  // @todo João, não gera o mesmo hash para duas strins com o mesmo texto...
   return hasher(std::string(value));
 }
 
