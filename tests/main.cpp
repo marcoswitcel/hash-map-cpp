@@ -6,7 +6,7 @@
 #include "../src/hash-map.cpp"
 #include "../src/hash-set.cpp"
 
-void test_put()
+void test_hash_map_put()
 {
   Hash_Map<size_t> map(100);
 
@@ -19,7 +19,7 @@ void test_put()
   assert(map.occupancy == 2);
 }
 
-void test_lookup()
+void test_hash_map_lookup()
 {
   Hash_Map<size_t> map(100);
 
@@ -49,7 +49,7 @@ void test_lookup()
   assert(map.occupancy == 2);
 }
 
-void test_remove()
+void test_hash_map_remove()
 {
   Hash_Map<size_t> map(1024);
 
@@ -78,7 +78,7 @@ void test_remove()
   assert(map.occupancy == 2);
 }
 
-void test_hashing_to_same_bucket()
+void test_hash_map_hashing_to_same_bucket()
 {
   Hash_Map<size_t> map(1); // apenas um bucket
 
@@ -196,7 +196,7 @@ void test_hash_set_remove()
   assert(!map.has(1027));
 }
 
-void test_dict()
+void test_hash_map_dict()
 {
   Hash_Map<size_t> map(1000);
 
@@ -252,7 +252,7 @@ void test_dict()
   */
 }
 
-void test_clear()
+void test_hash_map_clear()
 {
   Hash_Map<size_t> map(100);
 
@@ -298,14 +298,13 @@ void test_hash_map_with_stdstrings()
   Hash_Map<size_t> map(100);
 
   const char* v01 = "texto";
-  const char* v02 = "palavra";
-  const char* v03 = "texto";
+  const char* v02 = "texto";
   
   assert(map.put(v01, 13));
 
-  assert(map.lookup(v03).success);
+  assert(map.lookup(v02).success);
  
-  assert(map.put(v03, 14));
+  assert(map.put(v02, 14));
  
   assert(map.lookup(v01).success);
   assert(map.lookup(v01).value == 14);
@@ -315,12 +314,12 @@ int main()
 {
   std::cout << "Rodando testes..." << std::endl;
 
-  test_put();
-  test_lookup();
-  test_dict();
-  test_remove();
-  test_clear();
-  test_hashing_to_same_bucket();
+  test_hash_map_put();
+  test_hash_map_lookup();
+  test_hash_map_dict();
+  test_hash_map_remove();
+  test_hash_map_clear();
+  test_hash_map_hashing_to_same_bucket();
   test_hash_map_with_stdstrings();
 
   test_hash_set_add();
