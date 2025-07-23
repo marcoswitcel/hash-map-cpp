@@ -13,10 +13,13 @@ BUILD_FOLDER_NAME=target
 build-folder-setup:
 	@ mkdir -p $(BUILD_FOLDER_NAME)
 
+copy-test-data:
+	@ cp ./$(TESTS_FOLDER_NAME)/test-words.txt ./$(BUILD_FOLDER_NAME)/test-words.txt
+
 main: build-folder-setup ./$(SOURCE_FOLDER_NAME)/main.cpp  
 	$(CC) ./$(SOURCE_FOLDER_NAME)/main.cpp -o $(BUILD_FOLDER_NAME)/main $(CFLAGS) $(LFLAGS) $(DEF)
 
-tests: build-folder-setup ./$(TESTS_FOLDER_NAME)/main.cpp  
+tests: build-folder-setup copy-test-data ./$(TESTS_FOLDER_NAME)/main.cpp  
 	$(CC) ./$(TESTS_FOLDER_NAME)/main.cpp -o $(BUILD_FOLDER_NAME)/tests $(CFLAGS) $(LFLAGS) $(DEF)
 
 run: main
