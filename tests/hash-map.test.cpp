@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "./load-data-util.cpp"
 #include "../src/hash-map.cpp"
 #include "../src/hash.cpp"
 
@@ -237,6 +238,33 @@ void test_hash_map_with_stdstrings()
   assert(map.lookup(v01).value == 14);
 }
 
+void test_hash_map_against_data_set()
+{
+  Hash_Map<size_t> map(1024);
+  size_t line_count = 0;
+
+  load_test_data([&map, &line_count](std::string word) {
+    auto key = word.c_str();
+    auto result = map.lookup(key);
+
+    if (result.success)
+    {
+      map.put(key, result.value + 1);
+    }
+    else
+    {
+      map.put(key, 1);
+    }
+    
+    // @note João, por hora o dataset tem palavras não duplicadas
+    line_count++;
+  });
+
+  assert(map.occupancy > 0);
+  assert(map.occupancy == line_count);
+  // @note João, fazer algum teste checando se todas chaves estão setadas com 1?
+}
+
 void test_hash_map_main()
 {
   test_hash_map_put();
@@ -247,4 +275,5 @@ void test_hash_map_main()
   test_hash_map_hashing_to_same_bucket();
   test_hash_map_with_stdstrings();
   test_hash_map_changing_hash_func();
+  test_hash_map_against_data_set();
 }
