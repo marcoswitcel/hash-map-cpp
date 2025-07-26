@@ -129,7 +129,7 @@ struct Hash_Set {
 
     while (item)
     {
-      if (std::memcmp(&item->value, &value, sizeof(Value_Type)) == 0)
+      if (equality(&item->value, &value))
       {
         if (previous_item == NULL)
         {
