@@ -21,7 +21,6 @@ trabalho
 programador
 entregador
 pizzaria
-comida
 amor
 medo
 ansiedade
