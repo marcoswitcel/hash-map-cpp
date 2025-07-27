@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "./load-data-util.cpp"
 #include "../src/hash-set.cpp"
 
 
@@ -128,6 +129,26 @@ void test_hash_set_remove()
   assert(!map.has(1027));
 }
 
+void test_hash_set_against_data_set()
+{
+  Hash_Set<std::string> set(1024);
+
+  load_test_data([&set](std::string word) {
+    set.add(word);
+  });
+
+  assert(set.occupancy > 0);
+  size_t old_occupancy = set.occupancy;
+
+  // @note João, tecnicamente esse arquivo poderia ter sido modificado, mas isso
+  // não deve acontecer no fluxo normal de testes, então vou ignorar...
+  load_test_data([&set](std::string word) {
+    set.add(word);
+  });
+
+  assert(old_occupancy == set.occupancy);
+}
+
 void test_hash_set_main()
 {
   test_hash_set_add();
@@ -136,4 +157,5 @@ void test_hash_set_main()
   test_hash_set_clear();
   test_hash_set_std_string();
   test_hash_set_changing_hash_func_and_compare();
+  test_hash_set_against_data_set();
 }
